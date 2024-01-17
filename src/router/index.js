@@ -6,12 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'some',
-      component: () => import('../views/Some.vue')
-    },
-    {
-      path: '/else',
-      name: 'else',
-      component: () => import('../views/Else.vue')
+      component: () => import('../views/main/Index.vue')
     },
   ]
 })

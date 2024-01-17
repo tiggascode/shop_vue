@@ -1,5 +1,7 @@
 jQuery(function ($) {
   'use strict';
+$(document).ready(function(){
+
 
   /****======  Sticky Header ======*******/
   var scrollPosition = window.scrollY;
@@ -114,10 +116,11 @@ jQuery(function ($) {
 
 
   /****======  banner-one__slider Slick  ======*******/
-  $(".slick").slick({
+    $(".slick").slick({
     prevArrow: '<div class="slick-arrow arrow-back"> <i class="flaticon-left-arrow-2"></i> </div>',
     nextArrow: '<div class="slick-arrow arrow-next"> <i class="flaticon-right-arrow-2"></i> </div>'
   });
+
 
 
   /****======  banner-4 Slick  ======*******/
@@ -1011,5 +1014,5 @@ jQuery(function ($) {
       $(".loader").css("display", "none");
     });
   });
-
+});
 }(jQuery));
