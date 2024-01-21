@@ -1,6 +1,6 @@
 <template>
     <div>
-        <main class="overflow-hidden">
+    <main class="overflow-hidden">
 
 <!-- newsLetter_popup Start -->
 <button data-mfp-src="#newsLetter-popup" class="modal-btn d-none"></button>
@@ -2453,7 +2453,10 @@
 
 <script>
 export default {
-    name: 'Index'
+    name: 'Index',
+    mounted(){
+        $(document).trigger('change')
+    }
 }
 </script>
 
