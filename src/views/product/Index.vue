@@ -119,7 +119,7 @@
                                         <div id="price-range" class="slider"></div>
                                         <div class="output-price"> <label for="priceRange">Price:</label> <input
                                                 type="text" id="priceRange" readonly> </div> <button class="filterbtn"
-                                            type="submit" @click.prevent="getProductList"> Filter </button>
+                                            type="submit" @click.prevent="filterProducts"> Filter </button>
                                     </div>
                                 </div>
                                 <div class="single-sidebar-box mt-30 wow fadeInUp animated pb-0 border-bottom-0 ">
@@ -361,6 +361,14 @@ export default {
     },
 
     methods:{
+        filterProducts(){
+            let prices = $("#priceRange").val();
+
+            this.prices = prices.replace(/[\s+]|[$]/g, '').split('-')
+
+            this.getProducts();
+            
+        },
 
         addColor(id){
             if(!this.colors.includes(id))
@@ -383,11 +391,14 @@ export default {
             }
         },
 
-        getProductList(){
-            console.log(this.tags);
-        },
+
         getProducts (){
-            this.axios.get('http://127.0.0.1:8000/api/products')
+            this.axios.post('http://127.0.0.1:8000/api/products',{
+                'categories': this.categories,
+                'colors': this.colors,
+                'tags': this.tags,
+                'prices': this.prices,
+            })
             .then(res => {
                 this.products = res.data.data
 
