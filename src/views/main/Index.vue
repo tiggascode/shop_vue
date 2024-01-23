@@ -2455,7 +2455,7 @@
 export default {
     name: 'Index',
     mounted(){
-        $(document).trigger('init')
+        $(document).trigger('changed')
     }
 }
 </script>
