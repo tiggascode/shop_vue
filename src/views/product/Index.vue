@@ -194,7 +194,7 @@
                                                         </a>
                                                         <div class="products-grid-one__badge-box"> <span
                                                                 class="bg_base badge new ">New</span>
-                                                        </div> <a href="cart.html" class="addcart btn--primary style2">
+                                                        </div> <a @click.prevent="addToCart(product, true)" href="cart.html" class="addcart btn--primary style2">
                                                             Add To Cart </a>
                                                         <div class="products-grid__usefull-links">
                                                             <ul>
@@ -274,12 +274,13 @@
                                                                                 <div class="qtySelector text-center">
                                                                                     <span class="decreaseQty"><i
                                                                                             class="flaticon-minus"></i>
-                                                                                    </span> <input type="number"
+                                                                                    </span> 
+                                                                                    <input type="number"
                                                                                         class="qtyValue" value="1" />
                                                                                     <span class="increaseQty"> <i
                                                                                             class="flaticon-plus"></i>
                                                                                     </span> </div>
-                                                                                <button class="btn--primary "> Add to
+                                                                                <button  @click.prevent="addToCart(product)" class="btn--primary "> Add to
                                                                                     Cart </button>
                                                                             </div>
                                                                         </div>
@@ -301,7 +302,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="products-three-single-content text-center"> <span>{{ product.category.title }}</span>
-                                                        <h5><a href="shop-details-3.html"> {{  product.title }} </a>
+                                                        <h5>
+                                                            <router-link :to="{name: 'products.show', params: {id: product.id}}"> {{  product.title }} </router-link>
                                                         </h5>
                                                         <p><del>$200.00</del> 
                                                             ${{ product.price }}
@@ -378,6 +380,44 @@ export default {
     },
 
     methods:{
+
+        addToCart(product, isSingle){
+
+            let qty = isSingle ? 1 :  $('.qtyValue').val()
+            
+
+            let cart = localStorage.getItem('cart')
+            $('.qtyValue').val(1)
+            
+            let newProduct = [
+                {
+                    'id': product.id,
+                    'image_url': product.image_url,
+                    'title': product.title,
+                    'price': product.price,
+                    'qty': qty,
+                }
+            ]
+
+            if(!cart){
+                localStorage.setItem('cart', JSON.stringify(newProduct));
+            }
+            else {
+                cart= JSON.parse(cart)
+
+                cart.forEach(productInCart => {
+                    if(productInCart.id === product.id){
+                        productInCart.qty = Number(productInCart.qty) + Number(qty);
+                        newProduct = null;
+                    }
+                })
+
+                Array.prototype.push.apply(cart, newProduct)
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+            }
+        },
+
         filterProducts(){
             let prices = $("#priceRange").val();
 
@@ -428,7 +468,6 @@ export default {
         getProduct (id){
             this.axios.get(`http://127.0.0.1:8000/api/products/${id}`)
             .then(res => {
-
                 this.popupProduct = res.data.data
             })
             .finally(v =>{
